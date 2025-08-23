@@ -158,3 +158,5 @@ public Optional<Cell> cellAtPoint(Point p)
 🤔 How about we improve the `cellAtColRow` method now we know about optional containers?
 
 🤔 Now that we have `cellAtPoint`, lets use it.  Grow the app window to 1024x720 so we have some clear space to the right of the grid.  In this space, put the details of whatever cell we are hoving over.  For example, you might put the type of cell that is located there, and what it's elevation is.  There are many ways to do this, but one good way is to call `cellAtPoint` while painting the stage and use the resulting cell information.
+
+testing changes
