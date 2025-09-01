@@ -15,6 +15,9 @@ public abstract class Actor<S extends Shape> {
       Graphics2D g2 = (Graphics2D) g;
       for (S s : shapes) {
         g2.fill(s);
+
+        g2.setColor(Color.BLACK);
+        g2.draw(s);
       }
     }
     /*
