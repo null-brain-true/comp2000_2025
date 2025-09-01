@@ -9,15 +9,18 @@ public abstract class Actor<S extends Shape> {
   S[] shapes;
 
   public void paint(Graphics g) {
-    g.setColor(color);
-
+    
     if (shapes != null) {
       Graphics2D g2 = (Graphics2D) g;
-      for (S s : shapes) {
-        g2.fill(s);
 
-        g2.setColor(Color.BLACK);
-        g2.draw(s);
+       g.setColor(color);
+      for (S shape : shapes) {
+        g2.fill(shape);
+
+        g2.setColor(Color.GRAY);
+        for (S outline : shapes) {
+          g2.draw(outline);
+        }
       }
     }
     /*
