@@ -1,10 +1,12 @@
 import java.awt.Color;
 import java.awt.Polygon;
+import java.util.ArrayList;
 
 public class Bird extends Actor {
   public Bird(Cell inLoc) {
     loc = inLoc;
     color = Color.GREEN;
+    display = new ArrayList<>();
 
     Polygon wing1 = new Polygon();
     wing1.addPoint(loc.x + 5, loc.y + 5);
@@ -22,6 +24,8 @@ public class Bird extends Actor {
     body.addPoint(loc.x + 20, loc.y + 25);
     body.addPoint(loc.x + 15, loc.y + 25);
 
-    shapes = new Polygon[] { wing1, wing2, body };
+    display.add(wing1);
+    display.add(wing2);
+    display.add(body);
   }
 }

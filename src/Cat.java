@@ -1,10 +1,12 @@
 import java.awt.Color;
 import java.awt.Polygon;
+import java.util.ArrayList;
 
 public class Cat extends Actor {
   public Cat(Cell inLoc) {
     loc = inLoc;
     color = Color.BLUE;
+    display = new ArrayList<>();
 
     Polygon ear1 = new Polygon();
     ear1.addPoint(loc.x + 11, loc.y + 5);
@@ -21,7 +23,9 @@ public class Cat extends Actor {
     face.addPoint(loc.x + 29, loc.y + 15);
     face.addPoint(loc.x + 17, loc.y + 30);
 
-    shapes = new Polygon[] { ear1, ear2, face };
+    display.add(ear1);
+    display.add(ear2);
+    display.add(face);
   }
   /*
    * @Override
