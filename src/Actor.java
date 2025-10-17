@@ -72,7 +72,5 @@ public abstract class Actor implements Pulse {
 
 @FunctionalInterface
 interface MoveStrategy {
-  Cell chooseNextLoc(List<Cell> possibleLocs, Actor currActor, List<Actor> otheActors);
-
-  
+  Cell chooseNextLoc(List<Cell> possibleLocs, Actor currActor, List<Actor> otheActors);  
 }
