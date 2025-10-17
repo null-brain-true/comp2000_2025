@@ -1,3 +1,4 @@
+/*
 import java.util.List;
 
 public class MoveLeft implements MoveStrategy {
@@ -16,3 +17,4 @@ public class MoveLeft implements MoveStrategy {
     return "left-most movement";
   }
 }
+*/

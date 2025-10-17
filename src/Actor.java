@@ -2,6 +2,7 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Polygon;
 import java.util.List;
+import java.util.Random;
 
 public abstract class Actor implements Pulse {
   Color baseColor, color;
@@ -40,11 +41,24 @@ public abstract class Actor implements Pulse {
   public void setLocation(Cell inLoc) {
     loc = inLoc;
     if(loc.row % 2 == 0) {
-      mover = new MoveRandomly();
+      mover = (possibleLocs, currActor, others) -> {
+        int i = new Random().nextInt(possibleLocs.size());
+        return possibleLocs.get(i);
+      };
     } else {
-      mover = new MoveLeft();
+      mover = (possibleLocs, currActor, others) -> {
+        for (Cell c : possibleLocs) {
+          boolean occupied = others.stream().anyMatch(a -> a.loc.equals(c));
+          if (!occupied) return c;
+        }
+        return possibleLocs.get(0);
+      };
     }
     setPoly();
+  }
+
+  public Cell chooseNextLoc(List<Cell> possibLocs, List<Actor> otherActors) {
+    return mover.chooseNextLoc(possibLocs, this, otherActors);
   }
 
   public void pulsate(char phase, int percentage) {
@@ -54,4 +68,11 @@ public abstract class Actor implements Pulse {
     hsbValues[1] = ((float) percentage) / 100.0f;
     color = Color.getHSBColor(hsbValues[0], hsbValues[1], hsbValues[2]);
   }
+}
+
+@FunctionalInterface
+interface MoveStrategy {
+  Cell chooseNextLoc(List<Cell> possibleLocs, Actor currActor, List<Actor> otheActors);
+
+  
 }

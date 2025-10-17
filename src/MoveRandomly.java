@@ -1,3 +1,4 @@
+/* 
 import java.util.List;
 import java.util.Random;
 
@@ -12,3 +13,4 @@ public class MoveRandomly implements MoveStrategy {
     return "random movement";
   }
 }
+  */
