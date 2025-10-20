@@ -12,7 +12,7 @@ public class Client {
     public static void main(String[] args) throws IOException, InterruptedException {
         HttpClient client = HttpClient.newHttpClient();
         HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create("http://13.238.167.130/times"))
+                .uri(URI.create("http://13.238.167.130/weather"))
                 .header("Accept", "text/event-stream")
                 .build();
 
@@ -22,8 +22,21 @@ public class Client {
                     try (BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream, StandardCharsets.UTF_8))) {
                         String line;
                         while ((line = reader.readLine()) != null) {
+                            if(!line.isBlank()) {
+                                String[] parts = line.split(" ");
+                                if (parts.length==5) {
+                                    String timeStamp = parts[0];
+                                    String type = parts[1];
+                                    String xCor = parts[2];
+                                    String yCor = parts[3];
+                                    String value = parts[4];
+
+                                    System.out.println("Time:" + timeStamp + ", Type:" + type + ", X:" + xCor + ", Y:" + yCor + ", Value:" + value);
+                                }
+                            } else {
                                 System.out.println("Received: " + line);
                         }
+                    }
                     } catch (IOException e) {
                         System.err.println("Error reading Server Side Event (SSE) stream: " + e.getMessage());
                     }
