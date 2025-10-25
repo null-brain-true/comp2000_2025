@@ -19,24 +19,19 @@ public class Client {
         client.sendAsync(request, HttpResponse.BodyHandlers.ofInputStream())
                 .thenApply(HttpResponse::body)
                 .thenAccept(inputStream -> {
-                    try (BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream, StandardCharsets.UTF_8))) {
-                        String line;
-                        while ((line = reader.readLine()) != null) {
-                            if(!line.isBlank()) {
-                                String[] parts = line.split(" ");
-                                if (parts.length==5) {
-                                    String timeStamp = parts[0];
-                                    String type = parts[1];
-                                    String xCor = parts[2];
-                                    String yCor = parts[3];
-                                    String value = parts[4];
+                    try (BufferedReader reader = new BufferedReader(
+                            new InputStreamReader(inputStream, StandardCharsets.UTF_8))) {
 
-                                    System.out.println("Time:" + timeStamp + ", Type:" + type + ", X:" + xCor + ", Y:" + yCor + ", Value:" + value);
-                                }
-                            } else {
-                                System.out.println("Received: " + line);
-                        }
-                    }
+                        reader.lines()
+                                .filter(line -> !line.isBlank())
+                                .map(line -> line.split(" "))
+                                .filter(parts -> parts.length == 5)
+                                .map(parts -> String.format(
+                                        "At %s, the %s value at grid position (%s,%s) is %.2f",
+                                        parts[0], parts[1], parts[2], parts[3],
+                                        Double.parseDouble(parts[4])
+                                ))
+                                .forEach(System.out::println);
                     } catch (IOException e) {
                         System.err.println("Error reading Server Side Event (SSE) stream: " + e.getMessage());
                     }
