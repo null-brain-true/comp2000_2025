@@ -6,6 +6,11 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
+import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
 
 public class Client {
 
@@ -22,16 +27,16 @@ public class Client {
                     try (BufferedReader reader = new BufferedReader(
                             new InputStreamReader(inputStream, StandardCharsets.UTF_8))) {
 
-                        reader.lines()
-                                .filter(line -> !line.isBlank())
-                                .map(line -> line.split(" "))
-                                .filter(parts -> parts.length == 5)
-                                .map(parts -> String.format(
-                                        "At %s, the %s value at grid position (%s,%s) is %.2f",
-                                        parts[0], parts[1], parts[2], parts[3],
-                                        Double.parseDouble(parts[4])
-                                ))
-                                .forEach(System.out::println);
+                        List<String> passwords = reader.lines()
+                                .filter(line -> line.isBlank())
+                                .map(line -> line.replace("data: ", " ")).trim()
+                                .filter(Client::isAscii)
+                                .limit(SAMPLE_SIZE)
+                                .collect(Collectors.toList());
+
+                        Map<Integer, Long> charTypeHistgram = passwords.stream()
+                                .collect(Collectors.groupingBy(String::length, TreeMap::new, Collectors.counting()));
+
                     } catch (IOException e) {
                         System.err.println("Error reading Server Side Event (SSE) stream: " + e.getMessage());
                     }
